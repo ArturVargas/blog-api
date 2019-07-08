@@ -17,7 +17,7 @@ exports.signup = (req, res) => {
     db.doc(`/users/${newUser.handle}`).get()
         .then(doc => {
             if (doc.exists) {
-                return res.status(400).json({ handle: 'El nombre de usuario ya esta en Uso' });
+                return res.status(400).json({ message: 'El nombre de usuario ya esta en Uso' });
             } else {
                 return firebase.auth().createUserWithEmailAndPassword(newUser.email, newUser.pass);
             }
@@ -42,7 +42,7 @@ exports.signup = (req, res) => {
         })
         .catch(err => {
             if (err.code === 'auth/email-already-in-use') {
-                return res.status(400).json({ email: 'Este email ya esta en Uso' });
+                return res.status(400).json({ message: 'Este email ya esta en Uso' });
             }
             return res.status(500).json({ message: `Ocurrio un Error: ${err}` });
         })
@@ -67,7 +67,7 @@ exports.login = (req, res) => {
             if(err.code === 'auth/wrong-password'){
                 return res.status(403).json({message: 'Usuario ó Contraseña incorrectos'});
             }
-            return res.status(500).json({error: `Ocurrio un Error: ${err}`});
+            return res.status(500).json({message: `Ocurrio un Error: ${err}`});
         })
 };
 
